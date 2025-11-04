@@ -5,6 +5,7 @@ import { Quotes } from './components/Quotes';
 import { Insights } from './components/Insights';
 import { Reading } from './components/Reading';
 import { Reminders } from './components/Reminders';
+import { Workouts } from './components/Workouts';
 import { reminderNotificationService } from '../shared/services/reminderNotifications';
 
 declare global {
@@ -197,7 +198,7 @@ export default function App() {
   const [emotions, setEmotions] = useState<any[]>([]);
 
   // New feature states
-  const [view, setView] = useState<'timeline' | 'reading' | 'scribbles' | 'quotes' | 'insights' | 'reminders'>('timeline');
+  const [view, setView] = useState<'timeline' | 'reading' | 'scribbles' | 'quotes' | 'insights' | 'workouts' | 'reminders'>('timeline');
   const [notesSubView, setNotesSubView] = useState<'scribbles' | 'quotes'>('scribbles');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
@@ -1155,6 +1156,19 @@ export default function App() {
             </span>
           </button>
           <button
+            onClick={() => setView('workouts')}
+            className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+              view === 'workouts'
+                ? 'border-blue-600 text-blue-600'
+                : 'border-transparent text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            <span className="flex items-center gap-2">
+              <Activity className="w-4 h-4" />
+              Workouts
+            </span>
+          </button>
+          <button
             onClick={() => setView('reminders')}
             className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
               view === 'reminders'
@@ -2082,6 +2096,11 @@ export default function App() {
           emotions={emotions}
           categorizePage={categorizePage}
         />
+      )}
+
+      {/* Workouts View */}
+      {view === 'workouts' && (
+        <Workouts />
       )}
 
       {/* Reminders View */}
