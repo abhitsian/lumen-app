@@ -2,10 +2,8 @@ import { useEffect, useState } from 'react';
 import React from 'react';
 import { BookOpen, Plus, Search, Filter, BarChart3, FileText, Download, Command, Pin, Star, Trash2, Edit3, Check, X, TrendingUp, Clock, Globe, Tag, Folder, Target, Zap, AlertCircle, Code, MessageSquare, Palette, Briefcase, Music, Tv, Activity, ShoppingCart, Users, Newspaper, Library, Sparkles, Heart, Brain, ListOrdered, ChevronDown, ChevronUp, Bell } from 'lucide-react';
 import { Quotes } from './components/Quotes';
-import { Emotions } from './components/Emotions';
 import { Insights } from './components/Insights';
-import { Collections } from './components/Collections';
-import { ReadingQueue } from './components/ReadingQueue';
+import { Reading } from './components/Reading';
 import { Reminders } from './components/Reminders';
 import { reminderNotificationService } from '../shared/services/reminderNotifications';
 
@@ -199,7 +197,8 @@ export default function App() {
   const [emotions, setEmotions] = useState<any[]>([]);
 
   // New feature states
-  const [view, setView] = useState<'timeline' | 'scribbles' | 'habits' | 'quotes' | 'emotions' | 'insights' | 'collections' | 'queue' | 'reminders'>('timeline');
+  const [view, setView] = useState<'timeline' | 'reading' | 'scribbles' | 'quotes' | 'insights' | 'reminders'>('timeline');
+  const [notesSubView, setNotesSubView] = useState<'scribbles' | 'quotes'>('scribbles');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
@@ -1104,33 +1103,20 @@ export default function App() {
             </span>
           </button>
           <button
-            onClick={() => setView('emotions')}
+            onClick={() => setView('reading')}
             className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-              view === 'emotions'
+              view === 'reading'
                 ? 'border-blue-600 text-blue-600'
                 : 'border-transparent text-gray-600 hover:text-gray-900'
             }`}
           >
             <span className="flex items-center gap-2">
-              <Heart className="w-4 h-4" />
-              Emotions
+              <BookOpen className="w-4 h-4" />
+              Reading
             </span>
           </button>
           <button
-            onClick={() => setView('habits')}
-            className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-              view === 'habits'
-                ? 'border-blue-600 text-blue-600'
-                : 'border-transparent text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            <span className="flex items-center gap-2">
-              <Target className="w-4 h-4" />
-              Habits
-            </span>
-          </button>
-          <button
-            onClick={() => setView('scribbles')}
+            onClick={() => { setView('scribbles'); setNotesSubView('scribbles'); }}
             className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
               view === 'scribbles'
                 ? 'border-blue-600 text-blue-600'
@@ -1143,7 +1129,7 @@ export default function App() {
             </span>
           </button>
           <button
-            onClick={() => setView('quotes')}
+            onClick={() => { setView('quotes'); setNotesSubView('quotes'); }}
             className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
               view === 'quotes'
                 ? 'border-blue-600 text-blue-600'
@@ -1153,32 +1139,6 @@ export default function App() {
             <span className="flex items-center gap-2">
               <Sparkles className="w-4 h-4" />
               Quotes
-            </span>
-          </button>
-          <button
-            onClick={() => setView('queue')}
-            className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-              view === 'queue'
-                ? 'border-blue-600 text-blue-600'
-                : 'border-transparent text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            <span className="flex items-center gap-2">
-              <ListOrdered className="w-4 h-4" />
-              Queue
-            </span>
-          </button>
-          <button
-            onClick={() => setView('collections')}
-            className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
-              view === 'collections'
-                ? 'border-blue-600 text-blue-600'
-                : 'border-transparent text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            <span className="flex items-center gap-2">
-              <Folder className="w-4 h-4" />
-              Collections
             </span>
           </button>
           <button
@@ -2090,9 +2050,23 @@ export default function App() {
         </div>
       )}
 
-      {/* Emotions View */}
-      {view === 'emotions' && (
-        <Emotions />
+      {/* Reading View - Queue + Collections */}
+      {view === 'reading' && (
+        <Reading
+          pages={pages}
+          onUpdatePage={updatePage}
+          onOpenUrl={handleOpenUrl}
+          onDeletePage={(id) => {
+            const index = pages.findIndex(p => p.id === id);
+            if (index >= 0) handleDelete(index);
+          }}
+          categorizePage={categorizePage}
+          collections={collections}
+          onCreateCollection={createCollection}
+          onUpdateCollection={updateCollection}
+          onDeleteCollection={deleteCollection}
+          onMovePageToCollection={movePageToCollection}
+        />
       )}
 
       {/* Quotes View */}
@@ -2106,33 +2080,6 @@ export default function App() {
           pages={pages}
           appActivities={appActivities}
           emotions={emotions}
-          categorizePage={categorizePage}
-        />
-      )}
-
-      {/* Collections View */}
-      {view === 'collections' && (
-        <Collections
-          collections={collections}
-          pages={pages}
-          onCreateCollection={createCollection}
-          onUpdateCollection={updateCollection}
-          onDeleteCollection={deleteCollection}
-          onMovePageToCollection={movePageToCollection}
-          categorizePage={categorizePage}
-        />
-      )}
-
-      {/* Reading Queue View */}
-      {view === 'queue' && (
-        <ReadingQueue
-          pages={pages}
-          onUpdatePage={updatePage}
-          onOpenUrl={handleOpenUrl}
-          onDeletePage={(id) => {
-            const index = pages.findIndex(p => p.id === id);
-            if (index >= 0) handleDelete(index);
-          }}
           categorizePage={categorizePage}
         />
       )}
