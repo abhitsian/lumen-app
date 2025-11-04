@@ -9,6 +9,8 @@ export function Workouts() {
   const [athlete, setAthlete] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [showAuthCodeInput, setShowAuthCodeInput] = useState(false);
+  const [authCode, setAuthCode] = useState('');
 
   // Settings form
   const [clientId, setClientId] = useState('');
@@ -59,8 +61,7 @@ export function Workouts() {
   const connectToStrava = () => {
     const authUrl = stravaService.getAuthorizationUrl();
     window.electron.openUrl(authUrl);
-    // User will need to manually paste the authorization code
-    // In a real app, you'd set up a proper OAuth callback
+    setShowAuthCodeInput(true);
   };
 
   const handleAuthCode = async (code: string) => {
@@ -214,26 +215,85 @@ export function Workouts() {
   // Not connected state
   if (!isConnected) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-gray-50">
-        <div className="text-center max-w-md">
+      <div className="flex-1 flex items-center justify-center bg-gray-50 p-6">
+        <div className="text-center max-w-2xl">
           <Activity className="w-16 h-16 text-orange-500 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Connect to Strava</h2>
           <p className="text-gray-600 mb-6">
             Authorize Lumen to access your Strava activities and workout data.
           </p>
-          <button
-            onClick={connectToStrava}
-            className="px-6 py-3 bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700 transition-all inline-flex items-center gap-2 mb-4"
-          >
-            <ExternalLink className="w-5 h-5" />
-            Connect with Strava
-          </button>
-          <button
-            onClick={() => setShowSettings(true)}
-            className="block mx-auto text-sm text-gray-600 hover:text-gray-900"
-          >
-            Change API Settings
-          </button>
+
+          {!showAuthCodeInput ? (
+            <>
+              <button
+                onClick={connectToStrava}
+                className="px-6 py-3 bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700 transition-all inline-flex items-center gap-2 mb-4"
+              >
+                <ExternalLink className="w-5 h-5" />
+                Connect with Strava
+              </button>
+              <button
+                onClick={() => setShowSettings(true)}
+                className="block mx-auto text-sm text-gray-600 hover:text-gray-900"
+              >
+                Change API Settings
+              </button>
+            </>
+          ) : (
+            <div className="bg-white rounded-xl shadow-md p-6 text-left">
+              <h3 className="font-semibold text-lg mb-4">Paste Authorization Code</h3>
+
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 text-sm">
+                <p className="font-semibold text-blue-900 mb-2">Instructions:</p>
+                <ol className="list-decimal list-inside space-y-1 text-blue-800">
+                  <li>A browser window should have opened to Strava</li>
+                  <li>Click <strong>Authorize</strong> on Strava's page</li>
+                  <li>You'll see an error page - that's OK!</li>
+                  <li>Copy the <code className="bg-white px-1 rounded">code=...</code> from the URL</li>
+                  <li>Paste it below and click Connect</li>
+                </ol>
+                <p className="mt-3 text-xs text-blue-700">
+                  Example URL: <code className="bg-white px-1 rounded text-xs">localhost:3000/strava-callback?code=<strong>abc123def456</strong></code>
+                  <br />
+                  Copy only the part after <code className="bg-white px-1 rounded">code=</code>
+                </p>
+              </div>
+
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Authorization Code
+                  </label>
+                  <input
+                    type="text"
+                    value={authCode}
+                    onChange={(e) => setAuthCode(e.target.value)}
+                    placeholder="Paste the code here (e.g., d1d2df92ad3433488c1b7fcfbb2aa4ff3536e3a1)"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => handleAuthCode(authCode)}
+                    disabled={!authCode || loading}
+                    className="flex-1 px-4 py-2 bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {loading ? 'Connecting...' : 'Connect'}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setShowAuthCodeInput(false);
+                      setAuthCode('');
+                    }}
+                    className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-all"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );
