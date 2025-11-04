@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
-import { BookOpen, Plus, Search, Filter, BarChart3, FileText, Download, Command, Pin, Star, Trash2, Edit3, Check, X, TrendingUp, Clock, Globe, Tag, Folder, Target, Zap, AlertCircle, Code, MessageSquare, Palette, Briefcase, Music, Tv, Activity, ShoppingCart, Users, Newspaper, Library, Sparkles, Heart, Brain, ListOrdered, ChevronDown, ChevronUp } from 'lucide-react';
+import { BookOpen, Plus, Search, Filter, BarChart3, FileText, Download, Command, Pin, Star, Trash2, Edit3, Check, X, TrendingUp, Clock, Globe, Tag, Folder, Target, Zap, AlertCircle, Code, MessageSquare, Palette, Briefcase, Music, Tv, Activity, ShoppingCart, Users, Newspaper, Library, Sparkles, Heart, Brain, ListOrdered, ChevronDown, ChevronUp, Bell } from 'lucide-react';
 import { Quotes } from './components/Quotes';
 import { Emotions } from './components/Emotions';
 import { Insights } from './components/Insights';
 import { Collections } from './components/Collections';
 import { ReadingQueue } from './components/ReadingQueue';
+import { Reminders } from './components/Reminders';
+import { reminderNotificationService } from '../shared/services/reminderNotifications';
 
 declare global {
   interface Window {
@@ -197,7 +199,7 @@ export default function App() {
   const [emotions, setEmotions] = useState<any[]>([]);
 
   // New feature states
-  const [view, setView] = useState<'timeline' | 'scribbles' | 'habits' | 'quotes' | 'emotions' | 'insights' | 'collections' | 'queue'>('timeline');
+  const [view, setView] = useState<'timeline' | 'scribbles' | 'habits' | 'quotes' | 'emotions' | 'insights' | 'collections' | 'queue' | 'reminders'>('timeline');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<string | null>(null);
@@ -220,6 +222,10 @@ export default function App() {
     // Check tracking statuses
     loadAutoTrackingStatus();
     loadAppTrackingStatus();
+
+    // Start reminder notification service
+    reminderNotificationService.requestNotificationPermission();
+    reminderNotificationService.start();
 
     // Listen for capture events from global hotkey
     let cleanupCaptureUrl;
@@ -253,6 +259,7 @@ export default function App() {
       if (cleanupCaptureUrl) cleanupCaptureUrl();
       if (cleanupAutoCaptureUrl) cleanupAutoCaptureUrl();
       if (cleanupAppActivity) cleanupAppActivity();
+      reminderNotificationService.stop();
     };
   }, []);
 
@@ -1187,6 +1194,19 @@ export default function App() {
               Insights
             </span>
           </button>
+          <button
+            onClick={() => setView('reminders')}
+            className={`px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+              view === 'reminders'
+                ? 'border-blue-600 text-blue-600'
+                : 'border-transparent text-gray-600 hover:text-gray-900'
+            }`}
+          >
+            <span className="flex items-center gap-2">
+              <Bell className="w-4 h-4" />
+              Reminders
+            </span>
+          </button>
         </div>
       </div>
 
@@ -2115,6 +2135,11 @@ export default function App() {
           }}
           categorizePage={categorizePage}
         />
+      )}
+
+      {/* Reminders View */}
+      {view === 'reminders' && (
+        <Reminders />
       )}
     </div>
   );

@@ -1,5 +1,5 @@
 import Dexie, { Table } from 'dexie';
-import { ReadingSession, DailyDigest, UserPreferences, Topic, Quote } from '../types';
+import { ReadingSession, DailyDigest, UserPreferences, Topic, Quote, Reminder } from '../types';
 import { DEFAULT_EXCLUDED_DOMAINS, DEFAULT_EXCLUDED_PATTERNS } from '../constants';
 
 export class LumenDatabase extends Dexie {
@@ -8,6 +8,7 @@ export class LumenDatabase extends Dexie {
   preferences!: Table<UserPreferences, string>;
   topics!: Table<Topic, string>;
   quotes!: Table<Quote, string>;
+  reminders!: Table<Reminder, string>;
 
   constructor() {
     super('LumenDB');
@@ -26,6 +27,16 @@ export class LumenDatabase extends Dexie {
       preferences: 'id',
       topics: 'id, name, lastSeen',
       quotes: 'id, createdAt, isFavorite, *tags, linkedPageId'
+    });
+
+    // Add reminders table in version 3
+    this.version(3).stores({
+      sessions: 'id, url, domain, startTime, contentType, isArchived, isFavorite, *topics',
+      digests: 'id, date, type, generatedAt, viewed',
+      preferences: 'id',
+      topics: 'id, name, lastSeen',
+      quotes: 'id, createdAt, isFavorite, *tags, linkedPageId',
+      reminders: 'id, dueDate, isCompleted, isNotified, createdAt'
     });
   }
 }

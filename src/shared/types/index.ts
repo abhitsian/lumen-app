@@ -121,5 +121,16 @@ export interface Quote {
   linkedPageId?: string; // Link to a reading session if quote came from there
 }
 
+export interface Reminder {
+  id: string;
+  title: string;
+  description?: string;
+  dueDate: Date;
+  isCompleted: boolean;
+  isNotified: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 // Re-export emotion types
 export * from './emotions';
