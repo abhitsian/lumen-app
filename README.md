@@ -4,7 +4,7 @@
 
 Lumen illuminates your reading journey with AI-powered insights. Track what you read, how you feel, and discover patterns you never knew existed - all analyzed by local AI running privately on your Mac.
 
-[![Download](https://img.shields.io/badge/Download-Mac%20App-orange?style=for-the-badge&logo=apple)](https://github.com/YOUR_USERNAME/lumen-app/releases/latest)
+[![Download](https://img.shields.io/badge/Download-Mac%20App-orange?style=for-the-badge&logo=apple)](https://github.com/abhitsian/lumen-app/releases/latest)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
 
 ## ✨ Features
@@ -20,7 +20,7 @@ Lumen illuminates your reading journey with AI-powered insights. Track what you 
 
 ### Download & Install
 
-1. **Download** the latest [Lumen.dmg](https://github.com/YOUR_USERNAME/lumen-app/releases/latest)
+1. **Download** the latest [Lumen.dmg](https://github.com/abhitsian/lumen-app/releases/latest)
 2. **Open** the DMG and drag Lumen to Applications
 3. **Launch** Lumen (right-click → Open on first launch)
 
@@ -114,8 +114,8 @@ MIT License - see [LICENSE](LICENSE) file for details
 ## 📧 Contact
 
 - **Creator**: Vaibhav
-- **Issues**: [GitHub Issues](https://github.com/YOUR_USERNAME/lumen-app/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/YOUR_USERNAME/lumen-app/discussions)
+- **Issues**: [GitHub Issues](https://github.com/abhitsian/lumen-app/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/abhitsian/lumen-app/discussions)
 
 ---
 
