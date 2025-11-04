@@ -287,6 +287,6 @@ Branding:
 
 ---
 
-**Last Updated**: November 3, 2024
-**Created by**: Claude (Anthropic) in collaboration with user
-**License**: Proprietary
+**Last Updated**: November 4, 2024
+**Created by**: Abhishek Sivaraman
+**License**: MIT

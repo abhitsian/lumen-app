@@ -69,7 +69,7 @@ Upload to any web server, ensure:
 ```
 I'm excited to share something I've been building: Lumen 💡
 
-As a [YOUR ROLE], I read 50+ articles every week across product management, AI, and tech. 
+As a Product Manager, I read 50+ articles every week across product management, AI, and tech. 
 But I realized I was consuming without truly understanding my patterns.
 
 So I built Lumen - an AI-powered reading companion that:
@@ -323,7 +323,7 @@ Skip this step if you only want algorithmic insights.
 → Reach out on LinkedIn or create an issue on GitHub
 
 ## Need Help?
-Contact: [YOUR EMAIL or LinkedIn]
+Contact: Abhishek Sivaraman on LinkedIn or GitHub
 ```
 
 ---
@@ -450,11 +450,11 @@ Happy to answer questions!
 
 ```
 ---
-Vaibhav
-[YOUR TITLE]
+Abhishek Sivaraman
+Product Manager
 
 P.S. Check out Lumen - AI reading coach for Mac 💡
-Download: [LINK]
+Download: https://github.com/abhitsian/lumen-app/releases/latest
 ```
 
 ---

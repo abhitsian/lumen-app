@@ -113,7 +113,7 @@ MIT License - see [LICENSE](LICENSE) file for details
 
 ## 📧 Contact
 
-- **Creator**: Vaibhav
+- **Creator**: Abhishek Sivaraman
 - **Issues**: [GitHub Issues](https://github.com/abhitsian/lumen-app/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/abhitsian/lumen-app/discussions)
 

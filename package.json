@@ -2,6 +2,7 @@
   "name": "lumen",
   "version": "1.0.0",
   "description": "Illuminate your reading journey with AI-powered insights",
+  "author": "Abhishek Sivaraman",
   "main": "electron/main.js",
   "type": "module",
   "scripts": {
